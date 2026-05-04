@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>⚠️ SYSTEM BREACHED ⚠️</title>
   <style>
     body {
@@ -13,6 +13,7 @@
       font-family: 'Courier New', monospace;
       overflow: hidden;
       height: 100vh;
+      width: 100vw;
     }
     .scanline {
       position: fixed;
@@ -31,9 +32,9 @@
       100% { transform: translateY(100%); }
     }
     .glitch {
-      font-size: 3.5rem;
+      font-size: 2.8rem;
       text-align: center;
-      margin: 20px;
+      margin: 15px 10px;
       color: #ff0000;
       text-shadow: 0 0 10px #ff0000, 2px 2px 0 #00ff00, -2px -2px 0 #ffff00;
       animation: glitch 0.5s infinite;
@@ -49,28 +50,42 @@
     .container {
       position: relative;
       z-index: 3;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .log {
-      background: rgba(0, 20, 0, 0.8);
+      background: rgba(0, 20, 0, 0.9);
       border: 1px solid #00ff00;
-      margin: 20px auto;
-      padding: 15px;
+      margin: 15px auto;
+      padding: 12px;
+      width: 95%;
       max-width: 800px;
-      height: 380px;
+      height: 320px;
       overflow-y: auto;
       text-align: left;
-      font-size: 1.1rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 4px;
     }
     .red { color: #ff3333; }
     .yellow { color: #ffff00; }
     .final { 
       color: #ff00ff; 
-      font-size: 1.5rem; 
+      font-size: 1.4rem; 
       font-weight: bold; 
       text-shadow: 0 0 10px #ff00ff; 
+      margin-top: 10px;
+    }
+
+    /* Ajustes para telas menores */
+    @media (max-width: 600px) {
+      .glitch { font-size: 2.2rem; }
+      .log { height: 280px; font-size: 0.95rem; }
+      h2 { font-size: 1.3rem; }
     }
   </style>
 </head>
@@ -81,9 +96,9 @@
 
   <div class="container">
     <h1 class="glitch">⚠️ SYSTEM BREACHED ⚠️</h1>
-    <h2 style="color:#ff0000; margin:10px;">YOU HAVE BEEN HACKED</h2>
+    <h2 style="color:#ff0000; margin:8px;">YOU HAVE BEEN HACKED</h2>
     
-    <p style="font-size:1.5rem; color:#ffaa00;">
+    <p style="font-size:1.3rem; color:#ffaa00; margin:10px;">
       Acesso total concedido • Todos os dados foram extraídos
     </p>
 
@@ -108,27 +123,44 @@
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+
+    function resizeCanvas() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
     const chars = "01アイウエオハキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+    let drops = [];
+
+    function initDrops() {
+      const columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    }
 
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#00ff00';
       ctx.font = fontSize + 'px monospace';
+
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
         drops[i]++;
       }
     }
-    setInterval(draw, 35);
 
+    setInterval(draw, 35);
+    initDrops();
+
+    // Sons
     const alertSound = new Audio('https://assets.mixkit.co/sfx/preview/296/296-preview.mp3');
     const glitchSound = new Audio('https://freesound.org/data/previews/276/276951_5123854-lq.mp3');
     const typingSound = new Audio('https://www.soundjay.com/misc/sounds/typewriter-1.mp3');
@@ -160,6 +192,7 @@
       setTimeout(playHackerSounds, 600);
     });
 
+    // Log
     const log = document.getElementById('log');
     const extra = [
       "<span class='red'>[ALERTA]</span> Rastreamento completo realizado",
