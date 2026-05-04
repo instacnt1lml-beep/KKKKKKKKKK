@@ -35,10 +35,7 @@
       text-align: center;
       margin: 20px;
       color: #ff0000;
-      text-shadow: 
-        0 0 10px #ff0000,
-        2px 2px 0 #00ff00,
-        -2px -2px 0 #ffff00;
+      text-shadow: 0 0 10px #ff0000, 2px 2px 0 #00ff00, -2px -2px 0 #ffff00;
       animation: glitch 0.5s infinite;
     }
     @keyframes glitch {
@@ -61,19 +58,25 @@
       margin: 20px auto;
       padding: 15px;
       max-width: 800px;
-      height: 300px;
+      height: 380px;
       overflow-y: auto;
       text-align: left;
       font-size: 1.1rem;
+      line-height: 1.6;
     }
     .red { color: #ff3333; }
     .yellow { color: #ffff00; }
+    .final { 
+      color: #ff00ff; 
+      font-size: 1.5rem; 
+      font-weight: bold; 
+      text-shadow: 0 0 10px #ff00ff; 
+    }
   </style>
 </head>
 <body>
 
   <canvas id="matrix" style="position:fixed; top:0; left:0; z-index:1;"></canvas>
-  
   <div class="scanline"></div>
 
   <div class="container">
@@ -90,23 +93,23 @@
       <span class="yellow">[INFO]</span> Extraindo arquivos pessoais...<br>
       <span class="yellow">[INFO]</span> Senhas capturadas: 47<br>
       <span class="red">[CRÍTICO]</span> Câmera ativada<br>
-      <span class="yellow">[INFO]</span> Localização: Brasil<br>
-      <span class="red">[ALERTA]</span> Dados sendo enviados para servidor remoto...<br><br>
+      <span class="yellow">[INFO]</span> Localização residencial recebido: <strong>Residencial Pequis, Uberlândia - MG</strong><br>
+      <span class="red">[ALERTA]</span> Dados sendo enviados para servidor remoto...<br>
+      <span class="yellow">[INFO]</span> Arquivos do WhatsApp copiados<br>
+      <span class="red">[CRÍTICO]</span> Acesso à galeria liberado<br>
     </div>
 
-    <p style="margin-top: 30px; font-size: 2rem; color: #ff0000;">
-      💀 GAME OVER 💀
+    <p class="final">
+      💀 VOCÊ FOI HACKED PELO HACKER FODA 💀<br>
+      NÃO TEM ESCAPATÓRIA
     </p>
   </div>
 
   <script>
-    // Matrix Rain
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-
     const chars = "01アイウエオハキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const fontSize = 14;
     const columns = canvas.width / fontSize;
@@ -117,35 +120,59 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#00ff00';
       ctx.font = fontSize + 'px monospace';
-
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
-
     setInterval(draw, 35);
 
-    // Fake log scrolling
-    const log = document.getElementById('log');
-    const messages = [
-      "<span class='red'>[ALERTA]</span> Tentativa de rastreamento detectada...",
-      "<span class='yellow'>[INFO]</span> Arquivos do WhatsApp copiados",
-      "<span class='red'>[CRÍTICO]</span> Acesso à galeria liberado",
-      "<span class='yellow'>[INFO]</span> Enviando dados para o servidor principal..."
-    ];
+    const alertSound = new Audio('https://assets.mixkit.co/sfx/preview/296/296-preview.mp3');
+    const glitchSound = new Audio('https://freesound.org/data/previews/276/276951_5123854-lq.mp3');
+    const typingSound = new Audio('https://www.soundjay.com/misc/sounds/typewriter-1.mp3');
 
+    function playHackerSounds() {
+      alertSound.volume = 0.6;
+      alertSound.play();
+
+      let count = 0;
+      const interval = setInterval(() => {
+        if (count < 12) {
+          if (Math.random() > 0.5) {
+            glitchSound.currentTime = 0;
+            glitchSound.volume = 0.4;
+            glitchSound.play();
+          } else {
+            typingSound.currentTime = 0;
+            typingSound.volume = 0.5;
+            typingSound.play();
+          }
+          count++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 800);
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(playHackerSounds, 600);
+    });
+
+    const log = document.getElementById('log');
+    const extra = [
+      "<span class='red'>[ALERTA]</span> Rastreamento completo realizado",
+      "<span class='yellow'>[INFO]</span> Todos os dispositivos infectados"
+    ];
     let i = 0;
     setInterval(() => {
-      log.innerHTML += messages[i % messages.length] + "<br>";
-      log.scrollTop = log.scrollHeight;
-      i++;
-    }, 1200);
+      if (i < extra.length) {
+        log.innerHTML += extra[i] + "<br>";
+        log.scrollTop = log.scrollHeight;
+        i++;
+      }
+    }, 1400);
   </script>
 </body>
 </html>
