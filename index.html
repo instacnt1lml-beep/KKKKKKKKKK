@@ -3,65 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amor Para Sempre</title>
+  <title>⚠️ SYSTEM BREACHED ⚠️</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #1a0033, #330033);
-      color: #ff99cc;
-      font-family: 'Arial', sans-serif;
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.03) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      animation: scan 4s linear infinite;
+      z-index: 2;
+    }
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+    .glitch {
+      font-size: 3.5rem;
       text-align: center;
-      min-height: 100vh;
+      margin: 20px;
+      color: #ff0000;
+      text-shadow: 
+        0 0 10px #ff0000,
+        2px 2px 0 #00ff00,
+        -2px -2px 0 #ffff00;
+      animation: glitch 0.5s infinite;
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-3px, 3px); }
+      40% { transform: translate(3px, -3px); }
+      60% { transform: translate(-2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
     }
     .container {
-      padding: 40px 20px;
+      position: relative;
+      z-index: 3;
+      padding: 20px;
+      text-align: center;
     }
-    h1 {
-      font-size: 3.5rem;
-      margin: 30px 0;
-      text-shadow: 0 0 20px #ff66aa;
-      color: #ffccdd;
+    .log {
+      background: rgba(0, 20, 0, 0.8);
+      border: 1px solid #00ff00;
+      margin: 20px auto;
+      padding: 15px;
+      max-width: 800px;
+      height: 300px;
+      overflow-y: auto;
+      text-align: left;
+      font-size: 1.1rem;
     }
-    .photos {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
-      margin: 40px 0;
-    }
-    .photo {
-      border: 8px solid #ff99cc;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
-      transition: transform 0.4s;
-    }
-    .photo:hover {
-      transform: scale(1.08);
-    }
-    .heart {
-      font-size: 4rem;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
+    .red { color: #ff3333; }
+    .yellow { color: #ffff00; }
   </style>
 </head>
 <body>
+
+  <canvas id="matrix" style="position:fixed; top:0; left:0; z-index:1;"></canvas>
+  
+  <div class="scanline"></div>
+
   <div class="container">
-    <h1>Amor Para Sempre ❤️</h1>
+    <h1 class="glitch">⚠️ SYSTEM BREACHED ⚠️</h1>
+    <h2 style="color:#ff0000; margin:10px;">YOU HAVE BEEN HACKED</h2>
     
-    <div class="photos">
-      <img src="foto1.jpg" class="photo" width="380" alt="Casal 1">
-      <img src="foto2.jpg" class="photo" width="380" alt="Casal 2">
+    <p style="font-size:1.5rem; color:#ffaa00;">
+      Acesso total concedido • Todos os dados foram extraídos
+    </p>
+
+    <div class="log" id="log">
+      <span class="red">[ALERTA]</span> Conexão estabelecida de IP: 45.67.89.123<br>
+      <span class="red">[ALERTA]</span> Firewall desativado<br>
+      <span class="yellow">[INFO]</span> Extraindo arquivos pessoais...<br>
+      <span class="yellow">[INFO]</span> Senhas capturadas: 47<br>
+      <span class="red">[CRÍTICO]</span> Câmera ativada<br>
+      <span class="yellow">[INFO]</span> Localização: Brasil<br>
+      <span class="red">[ALERTA]</span> Dados sendo enviados para servidor remoto...<br><br>
     </div>
 
-    <p style="font-size: 1.8rem; margin-top: 30px;">
-      Você e eu... para sempre 💕
+    <p style="margin-top: 30px; font-size: 2rem; color: #ff0000;">
+      💀 GAME OVER 💀
     </p>
   </div>
+
+  <script>
+    // Matrix Rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const chars = "01アイウエオハキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff00';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 35);
+
+    // Fake log scrolling
+    const log = document.getElementById('log');
+    const messages = [
+      "<span class='red'>[ALERTA]</span> Tentativa de rastreamento detectada...",
+      "<span class='yellow'>[INFO]</span> Arquivos do WhatsApp copiados",
+      "<span class='red'>[CRÍTICO]</span> Acesso à galeria liberado",
+      "<span class='yellow'>[INFO]</span> Enviando dados para o servidor principal..."
+    ];
+
+    let i = 0;
+    setInterval(() => {
+      log.innerHTML += messages[i % messages.length] + "<br>";
+      log.scrollTop = log.scrollHeight;
+      i++;
+    }, 1200);
+  </script>
 </body>
 </html>
